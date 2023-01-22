@@ -1,0 +1,36 @@
+<mat-toolbar>
+  My Test App
+  <span class="spacer"></span>
+  <button class="app-button" (click)="refresh()" [disabled]="cars$ === undefined">Refresh</button>
+  <button class="app-button" (click)="subscribe()" [disabled]="intervalSubscription$">Subscribe</button>
+  <button class="app-button" (click)="unsubscribe()"
+    [disabled]="intervalSubscription$ === undefined">Unsubscribe</button>
+
+  <span class="spacer"></span>
+  <h4>
+    {{date | date: 'medium'}}
+    Counters: [{{counter}}] [{{counter10}}]
+    Callbacks: [{{callbackCounter}}]
+  </h4>
+
+
+</mat-toolbar>
+
+<app-widget [dateSubject]="date$" (updateCallbackEvent)="onUpdateCallbackEvent($event)"></app-widget>
+
+
+
+
+<ng-template [ngIf]="cars$" [ngIfElse]="wait">
+  <div *ngFor="let car of cars$ | async">
+    <p>{{car.make + ' => ' + car.model}}</p>
+  </div>
+</ng-template>
+
+<ng-template #wait>
+  <div>
+    please wait ...
+  </div>
+</ng-template>
+
+<router-outlet></router-outlet>
