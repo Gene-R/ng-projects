@@ -1,0 +1,89 @@
+/* Landing page layout: responsive, auto-wrapping row of cards */
+
+.status {
+	display: flex;
+	gap: 1rem;
+	align-items: center;
+	margin-bottom: 1rem;
+	font-weight: 500;
+}
+
+.cards {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+	align-items: flex-start;
+}
+
+/* Canvas for free placement mode */
+.canvas {
+	position: relative;
+	min-height: 480px;
+	border: 1px dashed rgba(0,0,0,0.04);
+	padding: 16px;
+	overflow: auto;
+}
+
+.canvas .card {
+	position: absolute;
+	/* keep same visual size but absolute positioning will place via transform */
+	width: 200px;
+}
+
+.card {
+	background: #fff;
+	border: 1px solid rgba(0,0,0,0.06);
+	box-shadow: 0 2px 6px rgba(16,24,40,0.04);
+	padding: 1rem;
+	border-radius: 8px;
+	flex: 0 0 200px; /* fixed width cards */
+	box-sizing: border-box;
+	transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 6px 18px rgba(16,24,40,0.08);
+}
+
+.card.selected {
+	background: linear-gradient(180deg, #fff7ed, #fff3e0);
+	border-color: #ffcc80;
+	box-shadow: 0 8px 24px rgba(255, 152, 0, 0.12);
+}
+
+/* Drag and drop visuals */
+.drag-handle {
+	cursor: grab;
+	display: inline-block;
+	padding-right: 0.5rem;
+	user-select: none;
+}
+
+.card-header { display: flex; align-items: center; gap: 0.5rem; }
+
+.cdk-drag-preview {
+	box-shadow: 0 12px 36px rgba(0,0,0,0.18);
+	transform: rotate(0deg) !important;
+}
+
+.cdk-drag-placeholder {
+	opacity: 0.4;
+	border: 2px dashed rgba(0,0,0,0.06);
+}
+
+.card h3 {
+	margin: 0 0 0.5rem 0;
+	font-size: 1.05rem;
+}
+
+.card p {
+	margin: 0 0 0.75rem 0;
+	color: #444;
+}
+
+/* With fixed 200px width, the flex container handles wrapping responsively; no width overrides needed. */
+
+.example-button-row {
+	margin-bottom: 1rem;
+}

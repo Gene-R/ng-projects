@@ -1,0 +1,4 @@
+<article class="news-card" (click)="handleClick()" role="button" tabindex="0">
+	<h4>{{ card?.title || 'Untitled' }}</h4>
+	<p *ngIf="card?.content">{{ card?.content }}</p>
+</article>

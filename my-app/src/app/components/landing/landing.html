@@ -1,0 +1,72 @@
+<div class="example-button-row">
+  <button matButton="outlined" (click)="onButtonClick()">Add card</button>
+  <button matButton="outlined" (click)="toggleMode()" style="margin-left:0.5rem">
+    {{ reorderMode() ? 'Switch to Free placement' : 'Switch to Reorder' }}
+  </button>
+</div>
+
+<!-- Controls / status -->
+<div class="status">
+  <span>Cards: {{ cardCount() }}</span>
+  <span style="margin-left:1rem">Button clicks: {{ buttonClicks() }}</span>
+</div>
+<!-- add separator line -->
+<hr />
+
+<!-- News cards (draggable) -->
+<ng-container *ngIf="reorderMode(); else freeMode">
+  <div class="cards" cdkDropList (cdkDropListDropped)="onDrop($event)" role="list">
+  <ng-container *ngFor="let card of cards(); let i = index">
+    <!-- If your NewsCard accepts an @Input card, you can enable the line below. It will work
+           as long as the child component declares `@Input() card`.
+      -->
+    <!-- <app-news-card [card]="card" (cardClicked)="onNewsCardClick($event)"></app-news-card> -->
+
+    <!-- Inline fallback rendering so the card data is visible even if the child component
+           doesn't accept an input yet. -->
+    <div class="card" cdkDrag [class.selected]="selectedIds().has(card.id)" role="listitem">
+      <div class="card-header" cdkDragHandle>
+        <span class="drag-handle" aria-hidden="true">☰</span>
+        <h3>{{ card.title }}</h3>
+      </div>
+
+      <div class="card-body">
+        <p *ngIf="card.content">{{ card.content }}</p>
+      </div>
+
+      <div class="card-actions">
+        <button (click)="onNewsCardClick(card)" [attr.aria-pressed]="selectedIds().has(card.id)">
+          {{ selectedIds().has(card.id) ? 'Unselect' : 'Select' }}
+        </button>
+        <button (click)="removeCard(card.id)">Remove</button>
+      </div>
+    </div>
+  </ng-container>
+  </div>
+</ng-container>
+
+<!-- Free placement mode template -->
+<ng-template #freeMode>
+  <div class="canvas" role="region">
+    <ng-container *ngFor="let card of cards()">
+      <div class="card" cdkDrag (cdkDragEnded)="onFreeDragEnd($event, card)"
+           [style.transform]="'translate(' + (card.x || 0) + 'px,' + (card.y || 0) + 'px)'">
+        <div class="card-header" cdkDragHandle>
+          <span class="drag-handle" aria-hidden="true">☰</span>
+          <h3>{{ card.title }}</h3>
+        </div>
+
+        <div class="card-body">
+          <p *ngIf="card.content">{{ card.content }}</p>
+        </div>
+
+        <div class="card-actions">
+          <button (click)="onNewsCardClick(card)" [attr.aria-pressed]="selectedIds().has(card.id)">
+            {{ selectedIds().has(card.id) ? 'Unselect' : 'Select' }}
+          </button>
+          <button (click)="removeCard(card.id)">Remove</button>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</ng-template>
